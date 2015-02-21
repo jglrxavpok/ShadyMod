@@ -32,7 +32,6 @@ public abstract class AutoShaderPass extends ShaderPass
     @Override
     public void init()
     {
-        System.out.println("HDZKDZDK");
         fragContent = createFragmentContent();
         vertContent = createVertexContent();
         progContent = createProgramContent();
@@ -56,7 +55,6 @@ public abstract class AutoShaderPass extends ShaderPass
 
     public String read(String path)
     {
-        System.out.println(">>>>>> READING " + path);
         InputStream input = ColorPalette.class.getResourceAsStream(path);
         try
         {

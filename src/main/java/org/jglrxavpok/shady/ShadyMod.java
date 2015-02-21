@@ -27,6 +27,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.jglrxavpok.shady.cpalette.ColorPalette;
 import org.jglrxavpok.shady.cpalette.DefaultColorPalettes;
 import org.jglrxavpok.shady.gui.GuiIconButton;
+import org.jglrxavpok.shady.gui.GuiShadyOptions;
 import org.jglrxavpok.shady.shaders.ShaderBatch;
 import org.jglrxavpok.shady.shaders.passes.LowResPass;
 
@@ -93,9 +94,6 @@ public class ShadyMod
 
     public void activatePalette()
     {
-        enabled = true;
-        updateConfig();
-
         if(batch != null)
         {
             if(OpenGlHelper.shadersSupported)
@@ -117,7 +115,6 @@ public class ShadyMod
 
     public void disactivePalette()
     {
-        enabled = false;
         updateConfig();
         ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, null, 51);
         ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, false, 55);
@@ -137,8 +134,8 @@ public class ShadyMod
         {
             if(event.button.id == 0x42)
             {
-                //                Minecraft.getMinecraft().displayGuiScreen(new GuiSelectPalette());
-                activatePalette();
+                Minecraft.getMinecraft().displayGuiScreen(new GuiShadyOptions(event.gui));
+                //                activatePalette();
             }
         }
     }
@@ -169,5 +166,15 @@ public class ShadyMod
             int y = event.gui.height / 6 + 48 - 6;
             event.buttonList.add(new GuiIconButton(0x42, x, y, new ResourceLocation(MODID, "textures/gui/palette.png")));
         }
+    }
+
+    public boolean isEnabled()
+    {
+        return enabled;
+    }
+
+    public void setEnabled(boolean flag)
+    {
+        this.enabled = flag;
     }
 }

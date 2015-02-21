@@ -44,7 +44,7 @@ public class ShaderBatch
 
     public void init()
     {
-        targets = new String[passes.size() == 1 ? 1 : 2]; // TODO: compute smaller number
+        targets = new String[passes.size() == 1 ? 1 : 2];
         for(int i = 0; i < targets.length; i++ )
             targets[i] = "swap_" + i;
         ShadyResManager resManager = ShadyMod.instance.getResourceManager();
@@ -127,14 +127,6 @@ public class ShaderBatch
             return "minecraft:main";
         }
         return targets[target - 1];
-    }
-
-    private int nextTarget(int current)
-    {
-        current++ ;
-        if(current >= targets.length)
-            return 0;
-        return current;
     }
 
     public ResourceLocation getResourceLocation()

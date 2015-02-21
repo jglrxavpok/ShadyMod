@@ -103,7 +103,7 @@ public class ShadyResManager implements IResourceManager
     public void register(VirtualResource res)
     {
         virtuals.add(res);
-        System.out.println("REGISTRED " + res.getResourceLocation().getResourceDomain() + ":" + res.getResourceLocation().getResourcePath());
+        System.out.println("Registred virtual resource at: " + res.getResourceLocation().getResourceDomain() + ":" + res.getResourceLocation().getResourcePath());
     }
 
 }
