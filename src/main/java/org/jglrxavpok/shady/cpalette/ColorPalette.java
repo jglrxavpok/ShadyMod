@@ -133,4 +133,15 @@ public class ColorPalette extends AutoShaderPass
         String hsbcolors = createHSBs();
         return read(new ResourceLocation(ShadyMod.MODID, "shaders/program/paletteBase.fsh")).replace("#palette#", palette).replace("#hsbcolors#", hsbcolors);
     }
+
+    @Override
+    public String getName()
+    {
+        return id + " Palette";
+    }
+
+    public static Map<String, ColorPalette> getPalettes()
+    {
+        return palettes;
+    }
 }

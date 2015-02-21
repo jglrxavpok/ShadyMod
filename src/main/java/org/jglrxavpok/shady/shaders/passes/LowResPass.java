@@ -24,4 +24,10 @@ public class LowResPass extends ShaderPass
         ;
     }
 
+    @Override
+    public String getName()
+    {
+        return "Low resolution";
+    }
+
 }

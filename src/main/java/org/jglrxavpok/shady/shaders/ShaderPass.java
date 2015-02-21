@@ -10,6 +10,8 @@ public abstract class ShaderPass
         ;
     }
 
+    public abstract String getName();
+
     public abstract String getProgram();
 
     public abstract void init();

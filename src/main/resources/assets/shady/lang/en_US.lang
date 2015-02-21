@@ -1,3 +1,4 @@
 shady.configuration=Shady configuration
 shady.enable.on=Shaders enabled
 shady.enable.off=Shaders disabled
+shady.userbatch=User-defined batch
