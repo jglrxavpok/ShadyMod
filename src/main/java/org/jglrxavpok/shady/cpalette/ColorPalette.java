@@ -13,10 +13,13 @@ import net.minecraft.util.ResourceLocation;
 
 import org.jglrxavpok.shady.ShadyMod;
 import org.jglrxavpok.shady.shaders.AutoShaderPass;
+import org.jglrxavpok.shady.shaders.IPassProvider;
+import org.jglrxavpok.shady.shaders.PassRegistry;
+import org.jglrxavpok.shady.shaders.ShaderPass;
 
 import com.google.common.collect.Maps;
 
-public class ColorPalette extends AutoShaderPass
+public class ColorPalette extends AutoShaderPass implements IPassProvider
 {
 
     private String                                 id;
@@ -88,7 +91,9 @@ public class ColorPalette extends AutoShaderPass
         IResource res = Minecraft.getMinecraft().getResourceManager().getResource(paletteLoc);
         BufferedImage image = ImageIO.read(res.getInputStream());
         int[] colors = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
-        return new ColorPalette(id, colors);
+        ColorPalette palette = new ColorPalette(id, colors);
+        PassRegistry.register(id, palette);
+        return palette;
     }
 
     public static ColorPalette fromID(String id)
@@ -143,5 +148,12 @@ public class ColorPalette extends AutoShaderPass
     public static Map<String, ColorPalette> getPalettes()
     {
         return palettes;
+    }
+
+    @Override
+    public ShaderPass providePass()
+    {
+        // We implement IPassProvider directly here as ColorPalettes are globally accessible and should only be loaded once
+        return this;
     }
 }

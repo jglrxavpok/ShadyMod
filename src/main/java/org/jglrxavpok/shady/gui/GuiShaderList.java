@@ -15,8 +15,9 @@ public class GuiShaderList extends GuiListExtended
 
     public GuiShaderList(Minecraft mc, int x, int y, int width, int height, int slotHeight)
     {
-        super(mc, width, height, y, height - y - 30, slotHeight);
+        super(mc, width, height, y, height - y - 40, slotHeight);
         entries = Lists.newArrayList();
+        selected = -1;
     }
 
     public void addEntry(ShaderPassEntry entry)
@@ -45,6 +46,18 @@ public class GuiShaderList extends GuiListExtended
     protected int getSize()
     {
         return entries.size();
+    }
+
+    public int getSelectedIndex()
+    {
+        return selected;
+    }
+
+    public ShaderPassEntry getSelected()
+    {
+        if(selected != -1)
+            return (ShaderPassEntry) getListEntry(selected);
+        return null;
     }
 
 }
