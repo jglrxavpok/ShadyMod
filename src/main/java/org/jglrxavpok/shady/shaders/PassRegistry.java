@@ -15,13 +15,23 @@ public class PassRegistry
         providers.put(id, provider);
     }
 
-    public Collection<String> getAllIDs()
+    public static Collection<String> getAllIDs()
     {
         return providers.keySet();
     }
 
-    public IPassProvider getFromID(String id)
+    public static IPassProvider getFromID(String id)
     {
         return providers.get(id);
+    }
+
+    public static String getID(IPassProvider provider)
+    {
+        for(String id : getAllIDs())
+        {
+            if(getFromID(id) == provider)
+                return id;
+        }
+        return null;
     }
 }

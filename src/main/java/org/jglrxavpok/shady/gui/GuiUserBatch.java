@@ -7,8 +7,8 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 
 import org.jglrxavpok.shady.cpalette.ColorPalette;
+import org.jglrxavpok.shady.shaders.PassRegistry;
 import org.jglrxavpok.shady.shaders.passes.DummyPass;
-import org.jglrxavpok.shady.shaders.passes.LowResPass;
 
 public class GuiUserBatch extends GuiScreen
 {
@@ -33,7 +33,7 @@ public class GuiUserBatch extends GuiScreen
     {
         buttonList.clear();
         passesList = new GuiShaderList(mc, 20, 30, width, height, 30);
-        passesList.addEntry(new ShaderPassEntry(fontRendererObj, new LowResPass()));
+        passesList.addEntry(new ShaderPassEntry(fontRendererObj, PassRegistry.getFromID("lowres").provideNewPass()));
         for(ColorPalette palette : ColorPalette.getPalettes().values())
         {
             passesList.addEntry(new ShaderPassEntry(fontRendererObj, palette));

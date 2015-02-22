@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
 
@@ -30,11 +31,12 @@ public class ColorPalette extends AutoShaderPass implements IPassProvider
 
     public ColorPalette(String id, int[] colors)
     {
-        super();
+        super(null);
         palettes.put(id, this);
         this.id = id;
         this.colors = colors;
         this.location = new ResourceLocation(ShadyMod.MODID, "shaders/post/" + id + ".json");
+        this.provider = this;
     }
 
     private String createHSBs()
@@ -142,7 +144,7 @@ public class ColorPalette extends AutoShaderPass implements IPassProvider
     @Override
     public String getName()
     {
-        return id + " Palette";
+        return I18n.format("shady.pass.type." + id);
     }
 
     public static Map<String, ColorPalette> getPalettes()
@@ -151,7 +153,7 @@ public class ColorPalette extends AutoShaderPass implements IPassProvider
     }
 
     @Override
-    public ShaderPass providePass()
+    public ShaderPass provideNewPass()
     {
         // We implement IPassProvider directly here as ColorPalettes are globally accessible and should only be loaded once
         return this;

@@ -8,9 +8,9 @@ public class LowResProvider implements IPassProvider
 {
 
     @Override
-    public ShaderPass providePass()
+    public ShaderPass provideNewPass()
     {
-        return new LowResPass();
+        return new LowResPass(this);
     }
 
 }

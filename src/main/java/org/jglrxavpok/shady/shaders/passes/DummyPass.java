@@ -6,6 +6,11 @@ import org.jglrxavpok.shady.shaders.ShaderPass;
 public class DummyPass extends ShaderPass
 {
 
+    public DummyPass()
+    {
+        super(null);
+    }
+
     @Override
     public String getName()
     {

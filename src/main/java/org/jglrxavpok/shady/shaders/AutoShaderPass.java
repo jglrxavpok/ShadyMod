@@ -18,9 +18,9 @@ public abstract class AutoShaderPass extends ShaderPass
     private String fragContent;
     private String progContent;
 
-    public AutoShaderPass()
+    public AutoShaderPass(IPassProvider provider)
     {
-        ;
+        super(provider);
     }
 
     public abstract String createProgramContent();

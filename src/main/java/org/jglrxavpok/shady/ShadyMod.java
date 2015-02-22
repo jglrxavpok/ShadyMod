@@ -30,7 +30,6 @@ import org.jglrxavpok.shady.gui.GuiIconButton;
 import org.jglrxavpok.shady.gui.GuiShadyOptions;
 import org.jglrxavpok.shady.shaders.PassRegistry;
 import org.jglrxavpok.shady.shaders.ShaderBatch;
-import org.jglrxavpok.shady.shaders.passes.LowResPass;
 import org.jglrxavpok.shady.shaders.providers.LowResProvider;
 
 @Mod(modid = ShadyMod.MODID, version = ShadyMod.VERSION, name = "Shady")
@@ -69,7 +68,7 @@ public class ShadyMod
         config.save();
 
         DefaultColorPalettes.init();
-        PassRegistry.register("lowress", new LowResProvider());
+        PassRegistry.register("lowres", new LowResProvider());
     }
 
     @EventHandler
@@ -86,7 +85,7 @@ public class ShadyMod
             paletteID = palette.getID();
             batch = new ShaderBatch();
             batch.addPass(palette); // TODO: Replace the palette, plz
-            batch.addPass(new LowResPass());
+            batch.addPass(PassRegistry.getFromID("lowres").provideNewPass());
             batch.init();
         }
         else

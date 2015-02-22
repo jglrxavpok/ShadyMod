@@ -1,0 +1,22 @@
+﻿shady.configuration=Configuration de Shady
+shady.enable.on=Shaders activés
+shady.enable.off=Shaders désactivés
+shady.userbatch=Pack de shader du joueur
+shady.editPass.title=Edition d'une étape
+shady.addPass=Nouvelle étape
+shady.editPass=Editer l'étape
+shady.removePass=Retirer l'étape
+shady.create=Créer
+shady.select.passtype=Selectionner le type de l'étape
+shady.select.passtype.title=Sélection du type de l'étape
+shady.currentPass=Type courant
+shady.pass.name=Nom de l'étape
+shady.select=Sélectionner
+
+shady.pass.type.lowres=Filtre basse résolution
+shady.pass.type.commodore64=Palette de couleur Commodore64
+shady.pass.type.gb=Palette de couleur Gameboy
+shady.pass.type.gb_gray=Palette de couleur Gameboy grise
+shady.pass.type.doom=Palette de couleur de Doom
+shady.pass.type.cga=Palette de couleur CGA
+shady.pass.type.nes=Palette de couleur NES
