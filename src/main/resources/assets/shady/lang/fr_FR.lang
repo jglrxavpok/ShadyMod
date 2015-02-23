@@ -3,7 +3,7 @@ shady.enable.on=Shaders activés
 shady.enable.off=Shaders désactivés
 shady.userbatch=Pack de shader du joueur
 shady.editPass.title=Edition d'une étape
-shady.addPass=Nouvelle étape
+shady.addPass=Ajouter une étape
 shady.editPass=Editer l'étape
 shady.removePass=Retirer l'étape
 shady.create=Créer
@@ -20,3 +20,6 @@ shady.pass.type.gb_gray=Palette de couleur Gameboy grise
 shady.pass.type.doom=Palette de couleur de Doom
 shady.pass.type.cga=Palette de couleur CGA
 shady.pass.type.nes=Palette de couleur NES
+
+shady.loadBatch=Charger
+shady.saveBatch=Enregistrer

@@ -3,7 +3,7 @@ shady.enable.on=Shaders enabled
 shady.enable.off=Shaders disabled
 shady.userbatch=User-defined batch
 shady.editPass.title=Edition of a pass
-shady.addPass=Create pass
+shady.addPass=Add a pass
 shady.editPass=Edit pass
 shady.removePass=Remove pass
 shady.create=Create
@@ -20,3 +20,6 @@ shady.pass.type.gb_gray=Gameboy gray color palette
 shady.pass.type.doom=Doom color palette
 shady.pass.type.cga=CGA color palette
 shady.pass.type.nes=NES color palette
+
+shady.loadBatch=Load a batch
+shady.saveBatch=Save a batch

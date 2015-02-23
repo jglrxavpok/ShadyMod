@@ -60,4 +60,16 @@ public class GuiShaderList extends GuiListExtended
         return null;
     }
 
+    public void remove(int index)
+    {
+        entries.remove(index);
+        if(selected >= entries.size())
+            selected = -1;
+    }
+
+    public boolean contains(ShaderPassEntry entry)
+    {
+        return entries.contains(entry);
+    }
+
 }

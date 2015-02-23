@@ -37,16 +37,14 @@ public class PassTypeEntry implements IGuiListEntry
     @Override
     public boolean mousePressed(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY)
     {
+        if(isMouseOver(slotIndex, x, y))
+            list.setSelected(slotIndex);
         return false;
     }
 
     @Override
     public void mouseReleased(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY)
     {
-        if(list.getSelectedIndex() == slotIndex)
-            list.setSelected(-1);
-        if(isMouseOver(slotIndex, x, y))
-            list.setSelected(slotIndex);
     }
 
     private boolean isMouseOver(int slotIndex, int x, int y)

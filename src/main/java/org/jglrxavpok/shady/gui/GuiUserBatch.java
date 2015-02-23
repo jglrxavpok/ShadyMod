@@ -6,8 +6,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 
-import org.jglrxavpok.shady.cpalette.ColorPalette;
-import org.jglrxavpok.shady.shaders.PassRegistry;
 import org.jglrxavpok.shady.shaders.passes.DummyPass;
 
 public class GuiUserBatch extends GuiScreen
@@ -17,11 +15,15 @@ public class GuiUserBatch extends GuiScreen
     public static final int ADD_BUTTON    = 1;
     public static final int EDIT_BUTTON   = 2;
     public static final int REMOVE_BUTTON = 3;
+    public static final int LOAD_BUTTON   = 4;
+    public static final int SAVE_BUTTON   = 5;
     private GuiScreen       parent;
     private GuiShaderList   passesList;
     private GuiButton       addButton;
     private GuiButton       editButton;
     private GuiButton       removeButton;
+    private GuiButton       loadButton;
+    private GuiButton       saveButton;
 
     public GuiUserBatch(GuiScreen parent)
     {
@@ -32,22 +34,25 @@ public class GuiUserBatch extends GuiScreen
     public void initGui()
     {
         buttonList.clear();
-        passesList = new GuiShaderList(mc, 20, 30, width, height, 30);
-        passesList.addEntry(new ShaderPassEntry(fontRendererObj, PassRegistry.getFromID("lowres").provideNewPass()));
-        for(ColorPalette palette : ColorPalette.getPalettes().values())
+        if(passesList == null)
         {
-            passesList.addEntry(new ShaderPassEntry(fontRendererObj, palette));
+            passesList = new GuiShaderList(mc, 20, 30, width, height, 30);
         }
 
         buttonList.add(new GuiButton(BACK_BUTTON, width / 2 - 100, height - 20, I18n.format("gui.back")));
 
         addButton = new GuiButton(ADD_BUTTON, 10, height - 20 - 50, I18n.format("shady.addPass"));
         editButton = new GuiButton(EDIT_BUTTON, width - 10 - 200, height - 20 - 50, I18n.format("shady.editPass"));
-        removeButton = new GuiButton(REMOVE_BUTTON, width - 10 - 200, height - 20 - 25, I18n.format("shady.removePass"));
+        removeButton = new GuiButton(REMOVE_BUTTON, 10, height - 20 - 25, I18n.format("shady.removePass"));
+
+        loadButton = new GuiButton(LOAD_BUTTON, width - 10 - 200, height - 20 - 25, 98, 20, I18n.format("shady.loadBatch"));
+        saveButton = new GuiButton(SAVE_BUTTON, width - 10 - 200 + 102, height - 20 - 25, 98, 20, I18n.format("shady.saveBatch"));
 
         buttonList.add(addButton);
         buttonList.add(editButton);
         buttonList.add(removeButton);
+        buttonList.add(loadButton);
+        buttonList.add(saveButton);
     }
 
     public void handleMouseInput() throws IOException
@@ -64,17 +69,16 @@ public class GuiUserBatch extends GuiScreen
         }
         else if(button.id == ADD_BUTTON)
         {
-            passesList.addEntry(new ShaderPassEntry(fontRendererObj, new DummyPass()));
-            passesList.setSelected(passesList.getSize() - 1);
-            openEditGui();
+            openEditGui(new ShaderPassEntry(fontRendererObj, new DummyPass(), "Pass " + (passesList.getSize() + 1)));
         }
         else if(button.id == EDIT_BUTTON)
         {
-            openEditGui();
+            openEditGui(passesList.getSelected());
         }
         else if(button.id == REMOVE_BUTTON)
         {
-            ;
+            int index = passesList.getSelectedIndex();
+            passesList.remove(index);
         }
         else
         {
@@ -82,13 +86,14 @@ public class GuiUserBatch extends GuiScreen
         }
     }
 
-    private void openEditGui()
+    private void openEditGui(ShaderPassEntry entry)
     {
-        if(passesList.getSelectedIndex() != -1)
-        {
-            ShaderPassEntry entry = passesList.getSelected();
-            mc.displayGuiScreen(new GuiEditPass(this, entry));
-        }
+        mc.displayGuiScreen(new GuiEditPass(this, entry));
+    }
+
+    public void addEntry(ShaderPassEntry entry)
+    {
+        passesList.addEntry(entry);
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
@@ -103,7 +108,6 @@ public class GuiUserBatch extends GuiScreen
     {
         super.updateScreen();
         boolean slotSelected = passesList.getSelectedIndex() != -1;
-        addButton.enabled = slotSelected;
         editButton.enabled = slotSelected;
         removeButton.enabled = slotSelected;
     }
@@ -122,5 +126,10 @@ public class GuiUserBatch extends GuiScreen
         {
             super.mouseReleased(mouseX, mouseY, state);
         }
+    }
+
+    public boolean hasEntry(ShaderPassEntry entry)
+    {
+        return passesList.contains(entry);
     }
 }
