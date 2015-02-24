@@ -3,36 +3,38 @@ package org.jglrxavpok.shady.shaders.passes;
 import org.jglrxavpok.shady.ShadyResManager;
 import org.jglrxavpok.shady.shaders.ShaderPass;
 
-public class DummyPass extends ShaderPass
+public class VanillaPass extends ShaderPass
 {
 
-    public DummyPass()
+    private String id;
+
+    public VanillaPass(String id)
     {
-        super();
+        this.id = id;
     }
 
     @Override
     public String getName()
     {
-        return "dummy";
+        return id;
     }
 
     @Override
     public String getProgram()
     {
-        return null;
+        return id;
     }
 
     @Override
     public void init()
     {
-
+        ;
     }
 
     @Override
     public void registerVirtuals(ShadyResManager resManager)
     {
-
+        ;
     }
 
 }

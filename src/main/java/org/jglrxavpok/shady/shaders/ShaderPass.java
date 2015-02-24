@@ -5,11 +5,8 @@ import org.jglrxavpok.shady.ShadyResManager;
 public abstract class ShaderPass
 {
 
-    protected IPassProvider provider;
-
-    public ShaderPass(IPassProvider provider)
+    public ShaderPass()
     {
-        this.provider = provider;
     }
 
     public abstract String getName();
@@ -19,10 +16,5 @@ public abstract class ShaderPass
     public abstract void init();
 
     public abstract void registerVirtuals(ShadyResManager resManager);
-
-    public IPassProvider getProvider()
-    {
-        return provider;
-    }
 
 }

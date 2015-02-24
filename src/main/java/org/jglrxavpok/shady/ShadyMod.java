@@ -30,7 +30,8 @@ import org.jglrxavpok.shady.gui.GuiIconButton;
 import org.jglrxavpok.shady.gui.GuiShadyOptions;
 import org.jglrxavpok.shady.shaders.PassRegistry;
 import org.jglrxavpok.shady.shaders.ShaderBatch;
-import org.jglrxavpok.shady.shaders.providers.LowResProvider;
+import org.jglrxavpok.shady.shaders.passes.LowResPass;
+import org.jglrxavpok.shady.shaders.passes.VanillaPass;
 
 @Mod(modid = ShadyMod.MODID, version = ShadyMod.VERSION, name = "Shady")
 public class ShadyMod
@@ -68,7 +69,20 @@ public class ShadyMod
         config.save();
 
         DefaultColorPalettes.init();
-        PassRegistry.register("lowres", new LowResProvider());
+        registerVanillaPasses();
+        PassRegistry.register("lowres", new LowResPass());
+    }
+
+    private void registerVanillaPasses()
+    {
+        ResourceLocation[] shaders = ObfuscationReflectionHelper.getPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 52);
+        for(ResourceLocation shader : shaders)
+        {
+            String[] parts = shader.getResourcePath().split("/");
+            String file = parts[parts.length - 1];
+            String name = file.substring(0, file.indexOf("."));
+            PassRegistry.register(name, new VanillaPass(name));
+        }
     }
 
     @EventHandler
@@ -77,23 +91,7 @@ public class ShadyMod
         ShaderLinkHelper.setNewStaticShaderLinkHelper();
     }
 
-    public void setPalette(ColorPalette palette)
-    {
-        this.palette = palette;
-        if(palette != null)
-        {
-            paletteID = palette.getID();
-            batch = new ShaderBatch();
-            batch.addPass(palette); // TODO: Replace the palette, plz
-            batch.addPass(PassRegistry.getFromID("lowres").provideNewPass());
-            batch.init();
-        }
-        else
-            paletteID = "none";
-        updateConfig();
-    }
-
-    public void activatePalette()
+    public void activateBatch()
     {
         if(batch != null)
         {
@@ -114,7 +112,7 @@ public class ShadyMod
         }
     }
 
-    public void disactivePalette()
+    public void disactiveBatch()
     {
         updateConfig();
         ObfuscationReflectionHelper.setPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, null, 51);
@@ -177,5 +175,10 @@ public class ShadyMod
     public void setEnabled(boolean flag)
     {
         this.enabled = flag;
+    }
+
+    public void setBatch(ShaderBatch batch)
+    {
+        this.batch = batch;
     }
 }

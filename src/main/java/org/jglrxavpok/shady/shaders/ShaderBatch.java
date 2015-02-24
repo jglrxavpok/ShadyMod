@@ -24,12 +24,14 @@ public class ShaderBatch
     private int              id;
     private ResourceLocation location;
     private String[]         targets;
+    private List<String>     names;
 
     public ShaderBatch()
     {
         this.id = NUM++ ;
         this.location = new ResourceLocation(ShadyMod.MODID, "shaders/post/virtual" + id + ".json");
         passes = Lists.newArrayList();
+        names = Lists.newArrayList();
     }
 
     public List<ShaderPass> getPasses()
@@ -37,8 +39,14 @@ public class ShaderBatch
         return passes;
     }
 
-    public void addPass(ShaderPass pass)
+    public List<String> getNames()
     {
+        return names;
+    }
+
+    public void addPass(String name, ShaderPass pass)
+    {
+        names.add(name);
         passes.add(pass);
     }
 
@@ -126,7 +134,7 @@ public class ShaderBatch
         {
             return "minecraft:main";
         }
-        return targets[target - 1];
+        return targets[(target - 1) % targets.length];
     }
 
     public ResourceLocation getResourceLocation()

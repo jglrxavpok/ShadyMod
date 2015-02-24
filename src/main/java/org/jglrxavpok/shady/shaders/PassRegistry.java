@@ -8,9 +8,9 @@ import com.google.common.collect.Maps;
 public class PassRegistry
 {
 
-    private static Map<String, IPassProvider> providers = Maps.newHashMap();
+    private static Map<String, ShaderPass> providers = Maps.newHashMap();
 
-    public static void register(String id, IPassProvider provider)
+    public static void register(String id, ShaderPass provider)
     {
         providers.put(id, provider);
     }
@@ -20,12 +20,12 @@ public class PassRegistry
         return providers.keySet();
     }
 
-    public static IPassProvider getFromID(String id)
+    public static ShaderPass getFromID(String id)
     {
         return providers.get(id);
     }
 
-    public static String getID(IPassProvider provider)
+    public static String getID(ShaderPass provider)
     {
         for(String id : getAllIDs())
         {

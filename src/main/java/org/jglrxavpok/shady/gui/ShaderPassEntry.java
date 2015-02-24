@@ -42,7 +42,7 @@ public class ShaderPassEntry implements IGuiListEntry
     public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected)
     {
         font.drawString(name, x, y, 0xFFFFFFFF);
-        font.drawString(I18n.format("shady.pass.type." + PassRegistry.getID(pass.getProvider())), x + 10, y + 10, 0xFF707070);
+        font.drawString(I18n.format("shady.pass.type." + PassRegistry.getID(pass)), x + 10, y + 10, 0xFF707070);
     }
 
     @Override

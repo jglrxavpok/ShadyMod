@@ -14,13 +14,11 @@ import net.minecraft.util.ResourceLocation;
 
 import org.jglrxavpok.shady.ShadyMod;
 import org.jglrxavpok.shady.shaders.AutoShaderPass;
-import org.jglrxavpok.shady.shaders.IPassProvider;
 import org.jglrxavpok.shady.shaders.PassRegistry;
-import org.jglrxavpok.shady.shaders.ShaderPass;
 
 import com.google.common.collect.Maps;
 
-public class ColorPalette extends AutoShaderPass implements IPassProvider
+public class ColorPalette extends AutoShaderPass
 {
 
     private String                                 id;
@@ -31,12 +29,11 @@ public class ColorPalette extends AutoShaderPass implements IPassProvider
 
     public ColorPalette(String id, int[] colors)
     {
-        super(null);
+        super();
         palettes.put(id, this);
         this.id = id;
         this.colors = colors;
         this.location = new ResourceLocation(ShadyMod.MODID, "shaders/post/" + id + ".json");
-        this.provider = this;
     }
 
     private String createHSBs()
@@ -152,10 +149,4 @@ public class ColorPalette extends AutoShaderPass implements IPassProvider
         return palettes;
     }
 
-    @Override
-    public ShaderPass provideNewPass()
-    {
-        // We implement IPassProvider directly here as ColorPalettes are globally accessible and should only be loaded once
-        return this;
-    }
 }

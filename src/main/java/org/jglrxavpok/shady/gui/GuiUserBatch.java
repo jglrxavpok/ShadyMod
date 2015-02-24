@@ -6,6 +6,8 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 
+import org.jglrxavpok.shady.ShadyMod;
+import org.jglrxavpok.shady.shaders.ShaderBatch;
 import org.jglrxavpok.shady.shaders.passes.DummyPass;
 
 public class GuiUserBatch extends GuiScreen
@@ -65,6 +67,15 @@ public class GuiUserBatch extends GuiScreen
     {
         if(button.id == BACK_BUTTON)
         {
+            ShaderBatch batch = new ShaderBatch();
+            for(int i = 0; i < passesList.getSize(); i++ )
+            {
+                ShaderPassEntry entry = ((ShaderPassEntry) passesList.getListEntry(i));
+                batch.addPass(entry.getName(), entry.getPass());
+            }
+            batch.init();
+            ShadyMod.instance.setBatch(batch);
+            ShadyMod.instance.activateBatch();
             mc.displayGuiScreen(parent);
         }
         else if(button.id == ADD_BUTTON)

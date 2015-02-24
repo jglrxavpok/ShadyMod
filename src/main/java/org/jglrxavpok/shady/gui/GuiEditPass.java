@@ -30,7 +30,7 @@ public class GuiEditPass extends GuiScreen
         this.parent = parent;
         this.entry = entry;
         passName = entry.getName();
-        passType = PassRegistry.getID(entry.getPass().getProvider());
+        passType = PassRegistry.getID(entry.getPass());
         if(passType == null)
         {
             passType = PassRegistry.getAllIDs().iterator().next(); // First entry in pass types
@@ -80,7 +80,7 @@ public class GuiEditPass extends GuiScreen
         else if(button.id == ADD_BUTTON)
         {
             entry.setName(passNameField.getText());
-            entry.setPass(PassRegistry.getFromID(passType).provideNewPass());
+            entry.setPass(PassRegistry.getFromID(passType));
             if(!parent.hasEntry(entry))
                 parent.addEntry(entry);
             mc.displayGuiScreen(parent);
