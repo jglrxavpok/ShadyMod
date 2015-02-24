@@ -1,6 +1,7 @@
 package org.jglrxavpok.shady.gui;
 
 import java.io.IOException;
+import java.util.List;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -8,6 +9,7 @@ import net.minecraft.client.resources.I18n;
 
 import org.jglrxavpok.shady.ShadyMod;
 import org.jglrxavpok.shady.shaders.ShaderBatch;
+import org.jglrxavpok.shady.shaders.ShaderPass;
 import org.jglrxavpok.shady.shaders.passes.DummyPass;
 
 public class GuiUserBatch extends GuiScreen
@@ -39,6 +41,16 @@ public class GuiUserBatch extends GuiScreen
         if(passesList == null)
         {
             passesList = new GuiShaderList(mc, 20, 30, width, height, 30);
+            ShaderBatch batch = ShadyMod.instance.getBatch();
+            if(batch != null)
+            {
+                List<String> names = batch.getNames();
+                for(int i = 0; i < names.size(); i++ )
+                {
+                    ShaderPass pass = batch.getPasses().get(i);
+                    passesList.addEntry(new ShaderPassEntry(fontRendererObj, pass, names.get(i)));
+                }
+            }
         }
 
         buttonList.add(new GuiButton(BACK_BUTTON, width / 2 - 100, height - 20, I18n.format("gui.back")));
@@ -67,15 +79,23 @@ public class GuiUserBatch extends GuiScreen
     {
         if(button.id == BACK_BUTTON)
         {
-            ShaderBatch batch = new ShaderBatch();
-            for(int i = 0; i < passesList.getSize(); i++ )
+            if(passesList.getSize() == 0)
             {
-                ShaderPassEntry entry = ((ShaderPassEntry) passesList.getListEntry(i));
-                batch.addPass(entry.getName(), entry.getPass());
+                ShadyMod.instance.setBatch(null);
+                ShadyMod.instance.disactiveBatch();
             }
-            batch.init();
-            ShadyMod.instance.setBatch(batch);
-            ShadyMod.instance.activateBatch();
+            else
+            {
+                ShaderBatch batch = new ShaderBatch();
+                for(int i = 0; i < passesList.getSize(); i++ )
+                {
+                    ShaderPassEntry entry = ((ShaderPassEntry) passesList.getListEntry(i));
+                    batch.addPass(entry.getName(), entry.getPass());
+                }
+                batch.init();
+                ShadyMod.instance.setBatch(batch);
+                ShadyMod.instance.activateBatch();
+            }
             mc.displayGuiScreen(parent);
         }
         else if(button.id == ADD_BUTTON)

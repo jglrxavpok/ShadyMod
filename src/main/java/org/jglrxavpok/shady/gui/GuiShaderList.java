@@ -72,4 +72,9 @@ public class GuiShaderList extends GuiListExtended
         return entries.contains(entry);
     }
 
+    public void clear()
+    {
+        entries.clear();
+    }
+
 }

@@ -181,4 +181,9 @@ public class ShadyMod
     {
         this.batch = batch;
     }
+
+    public ShaderBatch getBatch()
+    {
+        return batch;
+    }
 }
