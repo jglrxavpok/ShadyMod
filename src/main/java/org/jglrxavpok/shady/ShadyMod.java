@@ -8,7 +8,6 @@ import net.minecraft.client.gui.GuiOptions;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.shader.ShaderGroup;
-import net.minecraft.client.shader.ShaderLinkHelper;
 import net.minecraft.client.util.JsonException;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent.ActionPerformedEvent;
@@ -20,17 +19,17 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import org.jglrxavpok.shady.cpalette.ColorPalette;
 import org.jglrxavpok.shady.cpalette.DefaultColorPalettes;
 import org.jglrxavpok.shady.gui.GuiIconButton;
 import org.jglrxavpok.shady.gui.GuiShadyOptions;
 import org.jglrxavpok.shady.shaders.PassRegistry;
 import org.jglrxavpok.shady.shaders.ShaderBatch;
 import org.jglrxavpok.shady.shaders.passes.LowResPass;
+import org.jglrxavpok.shady.shaders.passes.NotchPass;
+import org.jglrxavpok.shady.shaders.passes.PhosphorPass;
 import org.jglrxavpok.shady.shaders.passes.VanillaPass;
 
 @Mod(modid = ShadyMod.MODID, version = ShadyMod.VERSION, name = "Shady")
@@ -46,7 +45,6 @@ public class ShadyMod
     private String             paletteID;
     private boolean            enabled;
     private ShaderBatch        batch;
-    private ColorPalette       palette;
 
     public ShadyResManager getResourceManager()
     {
@@ -81,14 +79,17 @@ public class ShadyMod
             String[] parts = shader.getResourcePath().split("/");
             String file = parts[parts.length - 1];
             String name = file.substring(0, file.indexOf("."));
-            PassRegistry.register(name, new VanillaPass(name));
+            if(name.equals("phosphor"))
+            {
+                PassRegistry.register(name, new PhosphorPass());
+            }
+            else if(name.equals("notch"))
+            {
+                PassRegistry.register(name, new NotchPass());
+            }
+            else
+                PassRegistry.register(name, new VanillaPass(name));
         }
-    }
-
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent event)
-    {
-        ShaderLinkHelper.setNewStaticShaderLinkHelper();
     }
 
     public void activateBatch()
@@ -134,7 +135,6 @@ public class ShadyMod
             if(event.button.id == 0x42)
             {
                 Minecraft.getMinecraft().displayGuiScreen(new GuiShadyOptions(event.gui));
-                //                activatePalette();
             }
         }
     }

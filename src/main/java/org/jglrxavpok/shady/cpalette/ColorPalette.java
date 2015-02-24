@@ -24,7 +24,6 @@ public class ColorPalette extends AutoShaderPass
     private String                                 id;
     private int[]                                  colors;
     private ResourceLocation                       location;
-    private String                                 groupContent;
     private static final Map<String, ColorPalette> palettes = Maps.newHashMap();
 
     public ColorPalette(String id, int[] colors)
@@ -109,13 +108,6 @@ public class ColorPalette extends AutoShaderPass
     public String getProgram()
     {
         return id;
-    }
-
-    @Override
-    public void init()
-    {
-        super.init();
-        this.groupContent = read(new ResourceLocation(ShadyMod.MODID, "programBase.json")).replace("#PALETTE_SHADER#", id);
     }
 
     @Override

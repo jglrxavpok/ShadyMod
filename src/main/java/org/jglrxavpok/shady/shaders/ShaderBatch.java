@@ -2,6 +2,7 @@ package org.jglrxavpok.shady.shaders;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -52,16 +53,28 @@ public class ShaderBatch
 
     public void init()
     {
-        targets = new String[passes.size() == 1 ? 1 : 2];
-        for(int i = 0; i < targets.length; i++ )
-            targets[i] = "swap_" + i;
         ShadyResManager resManager = ShadyMod.instance.getResourceManager();
+        List<String> auxTargetsList = Lists.newArrayList();
         for(ShaderPass pass : getPasses())
         {
             pass.init();
             pass.registerVirtuals(resManager);
+            Collection<ShaderTarget> auxtargets = pass.generateAuxiTargets();
+            for(ShaderTarget entry : auxtargets)
+            {
+                if(entry.shouldRenderInside())
+                    auxTargetsList.add(entry.getID());
+            }
         }
-
+        targets = new String[(passes.size() == 1 ? 1 : 2) + auxTargetsList.size()];
+        int swapTargets = targets.length - auxTargetsList.size(); // Number of targets needed without auxilary targets
+        for(int i = 0; i < swapTargets; i++ )
+            targets[i] = "swap:target" + i;
+        for(int i = swapTargets; i < targets.length; i++ )
+        {
+            targets[i] = auxTargetsList.get(i - swapTargets);
+        }
+        auxTargetsList.clear();
         try
         {
             StringWriter stringWriter = new StringWriter();
@@ -91,6 +104,70 @@ public class ShaderBatch
 
                         writer.name("outtarget");
                         writer.value(getOutTarget(passIndex));
+
+                        Collection<ShaderUniform> uniforms = pass.generateUniforms();
+                        if(!uniforms.isEmpty())
+                        {
+                            writer.name("uniforms");
+                            writer.beginArray();
+                            for(ShaderUniform uniform : uniforms)
+                            {
+                                writer.beginObject();
+                                writer.name("name");
+                                writer.value(uniform.getName());
+
+                                writer.name("values");
+                                writer.beginArray();
+                                for(double value : uniform.getValues())
+                                    writer.value(value);
+                                writer.endArray();
+                                writer.endObject();
+                            }
+                            writer.endArray();
+                        }
+
+                        Collection<ShaderTarget> auxtargets = pass.generateAuxiTargets();
+                        if(!auxtargets.isEmpty())
+                        {
+                            writer.name("auxtargets");
+                            writer.beginArray();
+                            for(ShaderTarget entry : auxtargets)
+                            {
+                                writer.beginObject();
+                                writer.name("name");
+                                writer.value(entry.getSampleName());
+
+                                writer.name("id");
+                                writer.value(entry.getID());
+
+                                if(entry.getWidth() != -1)
+                                {
+                                    writer.name("width");
+                                    writer.value(entry.getWidth());
+                                }
+
+                                if(entry.getHeight() != -1)
+                                {
+                                    writer.name("height");
+                                    writer.value(entry.getHeight());
+                                }
+
+                                if(entry.hasBilinearFlag())
+                                {
+                                    writer.name("bilinear");
+                                    writer.value(entry.isBilinear());
+                                }
+
+                                if(entry.shouldRenderInside())
+                                {
+                                    System.out.println("dqzdkqzdokzqdùmo<ikqzdùop<k");
+                                    auxTargetsList.add(entry.getID());
+                                }
+                                writer.endObject();
+                            }
+                            writer.endArray();
+                        }
+
                         writer.endObject();
 
                         passIndex++ ;
@@ -105,6 +182,19 @@ public class ShaderBatch
                     writer.name("outtarget");
                     writer.value("minecraft:main");
                     writer.endObject();
+
+                    for(String target : auxTargetsList)
+                    {
+                        writer.beginObject();
+                        writer.name("name");
+                        writer.value("blit");
+                        writer.name("intarget");
+                        writer.value(getInTarget(passIndex));
+
+                        writer.name("outtarget");
+                        writer.value(target);
+                        writer.endObject();
+                    }
                 }
                 writer.endArray();
             }
