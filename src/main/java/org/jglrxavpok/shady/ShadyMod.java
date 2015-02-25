@@ -1,5 +1,10 @@
 package org.jglrxavpok.shady;
 
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -27,6 +32,7 @@ import org.jglrxavpok.shady.gui.GuiIconButton;
 import org.jglrxavpok.shady.gui.GuiShadyOptions;
 import org.jglrxavpok.shady.shaders.PassRegistry;
 import org.jglrxavpok.shady.shaders.ShaderBatch;
+import org.jglrxavpok.shady.shaders.ShaderPass;
 import org.jglrxavpok.shady.shaders.passes.LowResPass;
 import org.jglrxavpok.shady.shaders.passes.NotchPass;
 import org.jglrxavpok.shady.shaders.passes.PhosphorPass;
@@ -45,6 +51,8 @@ public class ShadyMod
     private String             paletteID;
     private boolean            enabled;
     private ShaderBatch        batch;
+    private File               lastBatchFile;
+    public File                batchesFolder;
 
     public ShadyResManager getResourceManager()
     {
@@ -65,6 +73,11 @@ public class ShadyMod
         enabled = config.getBoolean("enabled", Configuration.CATEGORY_GENERAL, true, "Are shaders enabled?");
         paletteID = config.getString("palette", Configuration.CATEGORY_GENERAL, "none", "The id of the palette");
         config.save();
+
+        batchesFolder = new File(Minecraft.getMinecraft().mcDataDir, "batches");
+        if(!batchesFolder.exists())
+            batchesFolder.mkdirs();
+        lastBatchFile = new File(batchesFolder, "current.batch");
 
         DefaultColorPalettes.init();
         registerVanillaPasses();
@@ -185,5 +198,32 @@ public class ShadyMod
     public ShaderBatch getBatch()
     {
         return batch;
+    }
+
+    public void saveBatch() throws IOException
+    {
+        saveBatch(batch, lastBatchFile);
+    }
+
+    public void saveBatch(ShaderBatch batch, File batchFile) throws IOException
+    {
+        DataOutputStream out = new DataOutputStream(new FileOutputStream(batchFile));
+        if(batch == null)
+        {
+            out.writeInt(0);
+        }
+        else
+        {
+            out.write(batch.getPasses().size());
+            for(int i = 0; i < batch.getPasses().size(); i++ )
+            {
+                ShaderPass pass = batch.getPasses().get(i);
+                String passName = batch.getNames().get(i);
+                out.writeUTF(passName);
+                out.writeUTF(PassRegistry.getID(pass));
+            }
+        }
+        out.flush();
+        out.close();
     }
 }

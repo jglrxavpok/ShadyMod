@@ -34,6 +34,8 @@ public class GuiSelectPassType extends GuiScreen
             typeList.addEntry(new PassTypeEntry(fontRendererObj, id));
         }
 
+        typeList.sort();
+
         buttonList.add(new GuiButton(BACK_BUTTON, width / 2 + 5, height - height / 8, I18n.format("gui.back")));
         addButton = new GuiButton(ADD_BUTTON, width / 2 - 200 - 5, height - height / 8, I18n.format("shady.select"));
         buttonList.add(addButton);

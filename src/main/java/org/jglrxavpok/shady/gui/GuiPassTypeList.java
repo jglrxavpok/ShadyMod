@@ -1,9 +1,11 @@
 package org.jglrxavpok.shady.gui;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiListExtended;
+import net.minecraft.client.resources.I18n;
 
 import com.google.common.collect.Lists;
 
@@ -58,6 +60,20 @@ public class GuiPassTypeList extends GuiListExtended
         if(selected != -1)
             return (PassTypeEntry) getListEntry(selected);
         return null;
+    }
+
+    public void sort()
+    {
+        entries.sort(new Comparator<PassTypeEntry>()
+        {
+            @Override
+            public int compare(PassTypeEntry o1, PassTypeEntry o2)
+            {
+                String a = I18n.format("shady.pass.type." + o1.getType());
+                String b = I18n.format("shady.pass.type." + o2.getType());
+                return a.compareTo(b);
+            }
+        });
     }
 
 }

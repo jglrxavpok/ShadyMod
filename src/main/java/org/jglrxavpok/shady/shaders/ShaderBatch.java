@@ -27,6 +27,7 @@ public class ShaderBatch
     private String[]         targets;
     private List<String>     names;
 
+    // TODO: Per batch uniforms/targets
     public ShaderBatch()
     {
         this.id = NUM++ ;
