@@ -7,20 +7,30 @@ import net.minecraft.client.gui.GuiListExtended;
 
 import com.google.common.collect.Lists;
 
-public class GuiShaderList extends GuiListExtended
+public class GuiBatchesFileList extends GuiListExtended
 {
 
-    private ArrayList<ShaderPassEntry> entries;
-    private int                        selected;
+    private ArrayList<BatchFileEntry> entries;
+    private int                       selected;
 
-    public GuiShaderList(Minecraft mc, int x, int y, int width, int height, int slotHeight)
+    public GuiBatchesFileList(Minecraft mc, int x, int y, int width, int height, int slotHeight)
     {
         super(mc, width, height, y, height - y - 40, slotHeight);
         entries = Lists.newArrayList();
         selected = -1;
     }
 
-    public void addEntry(ShaderPassEntry entry)
+    public int getListWidth()
+    {
+        return 350;
+    }
+
+    protected int getScrollBarX()
+    {
+        return getListWidth() + left + 40;
+    }
+
+    public void addEntry(BatchFileEntry entry)
     {
         entries.add(entry);
         entry.list = this;
@@ -53,33 +63,10 @@ public class GuiShaderList extends GuiListExtended
         return selected;
     }
 
-    public ShaderPassEntry getSelected()
+    public BatchFileEntry getSelected()
     {
         if(selected != -1)
-            return (ShaderPassEntry) getListEntry(selected);
+            return (BatchFileEntry) getListEntry(selected);
         return null;
     }
-
-    public void remove(int index)
-    {
-        entries.remove(index);
-        if(selected >= entries.size())
-            selected = -1;
-    }
-
-    public boolean contains(ShaderPassEntry entry)
-    {
-        return entries.contains(entry);
-    }
-
-    public void clear()
-    {
-        entries.clear();
-    }
-
-    public int indexOf(ShaderPassEntry entry)
-    {
-        return entries.indexOf(entry);
-    }
-
 }

@@ -1,7 +1,9 @@
 package org.jglrxavpok.shady;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -226,7 +228,7 @@ public class ShadyMod
         }
         else
         {
-            out.write(batch.getPasses().size());
+            out.writeInt(batch.getPasses().size());
             for(int i = 0; i < batch.getPasses().size(); i++ )
             {
                 ShaderPass pass = batch.getPasses().get(i);
@@ -237,5 +239,23 @@ public class ShadyMod
         }
         out.flush();
         out.close();
+    }
+
+    public ShaderBatch loadBatch(File file) throws IOException
+    {
+        ShaderBatch batch = new ShaderBatch();
+        DataInputStream input = new DataInputStream(new FileInputStream(file));
+
+        int passesCount = input.readInt();
+        for(int i = 0; i < passesCount; i++ )
+        {
+            String name = input.readUTF();
+            String passID = input.readUTF();
+            ShaderPass pass = PassRegistry.getFromID(passID);
+            batch.addPass(name, pass);
+        }
+
+        input.close();
+        return batch;
     }
 }

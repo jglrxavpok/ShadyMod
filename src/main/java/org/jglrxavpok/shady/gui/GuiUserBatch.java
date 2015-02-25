@@ -1,6 +1,5 @@
 package org.jglrxavpok.shady.gui;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -128,6 +127,10 @@ public class GuiUserBatch extends GuiScreen
             int index = passesList.getSelectedIndex();
             passesList.remove(index);
         }
+        else if(button.id == LOAD_BUTTON)
+        {
+            mc.displayGuiScreen(new GuiLoadBatch(this, passesList));
+        }
         else if(button.id == SAVE_BUTTON)
         {
             ShaderBatch batch = new ShaderBatch();
@@ -136,14 +139,7 @@ public class GuiUserBatch extends GuiScreen
                 ShaderPassEntry entry = ((ShaderPassEntry) passesList.getListEntry(i));
                 batch.addPass(entry.getName(), entry.getPass());
             }
-            try
-            {
-                ShadyMod.instance.saveBatch(batch, new File(ShadyMod.instance.batchesFolder, "pass" + ShadyMod.instance.batchesFolder.listFiles().length + ".batch"));
-            }
-            catch(IOException e)
-            {
-                e.printStackTrace();
-            }
+            mc.displayGuiScreen(new GuiSaveBatch(this, batch));
         }
         else
         {
@@ -196,5 +192,10 @@ public class GuiUserBatch extends GuiScreen
     public boolean hasEntry(ShaderPassEntry entry)
     {
         return passesList.contains(entry);
+    }
+
+    public GuiShaderList getList()
+    {
+        return passesList;
     }
 }

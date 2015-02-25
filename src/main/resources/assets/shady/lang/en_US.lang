@@ -6,12 +6,18 @@ shady.editPass.title=Edition of a pass
 shady.addPass=Add a pass
 shady.editPass=Edit pass
 shady.removePass=Remove pass
-shady.create=Create
+shady.confirm=Confirm
 shady.select.passtype=Select a pass type
 shady.select.passtype.title=Pass type selection
 shady.currentPass=Current pass
 shady.pass.name=Pass name
 shady.select=Select
+shady.cancel=Cancel
+
+shady.saveBatch.invalid=File already exists or the name is invalid!
+shady.saveBatch.valid=Ready to save! \(^.^)/
+shady.saveBatch.title=Save a batch
+shady.loadBatch.title=Load a batch
 
 shady.pass.type.lowres=Low resolution filter
 shady.pass.type.commodore64=Commodore64 color palette
