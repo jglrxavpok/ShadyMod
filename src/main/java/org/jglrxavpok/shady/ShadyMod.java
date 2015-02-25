@@ -38,6 +38,9 @@ import org.jglrxavpok.shady.shaders.passes.NotchPass;
 import org.jglrxavpok.shady.shaders.passes.PhosphorPass;
 import org.jglrxavpok.shady.shaders.passes.VanillaPass;
 
+import com.google.common.reflect.ClassPath;
+import com.google.common.reflect.ClassPath.ResourceInfo;
+
 @Mod(modid = ShadyMod.MODID, version = ShadyMod.VERSION, name = "Shady")
 public class ShadyMod
 {
@@ -86,22 +89,31 @@ public class ShadyMod
 
     private void registerVanillaPasses()
     {
-        ResourceLocation[] shaders = ObfuscationReflectionHelper.getPrivateValue(EntityRenderer.class, Minecraft.getMinecraft().entityRenderer, 52);
-        for(ResourceLocation shader : shaders)
+        try
         {
-            String[] parts = shader.getResourcePath().split("/");
-            String file = parts[parts.length - 1];
-            String name = file.substring(0, file.indexOf("."));
-            if(name.equals("phosphor"))
+            for(ResourceInfo info : ClassPath.from(Thread.currentThread().getContextClassLoader()).getResources())
             {
-                PassRegistry.register(name, new PhosphorPass());
+                if(info.getResourceName().startsWith("assets/minecraft/shaders/program/") && info.getResourceName().endsWith(".json"))
+                {
+                    String[] parts = info.getResourceName().split("/");
+                    String file = parts[parts.length - 1];
+                    String name = file.substring(0, file.indexOf("."));
+                    if(name.equals("phosphor"))
+                    {
+                        PassRegistry.register(name, new PhosphorPass());
+                    }
+                    else if(name.equals("notch"))
+                    {
+                        PassRegistry.register(name, new NotchPass());
+                    }
+                    else
+                        PassRegistry.register(name, new VanillaPass(name));
+                }
             }
-            else if(name.equals("notch"))
-            {
-                PassRegistry.register(name, new NotchPass());
-            }
-            else
-                PassRegistry.register(name, new VanillaPass(name));
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
         }
     }
 

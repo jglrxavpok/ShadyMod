@@ -25,11 +25,11 @@ public class PassRegistry
         return providers.get(id);
     }
 
-    public static String getID(ShaderPass provider)
+    public static String getID(ShaderPass pass)
     {
         for(String id : getAllIDs())
         {
-            if(getFromID(id) == provider)
+            if(getFromID(id) == pass)
                 return id;
         }
         return null;
