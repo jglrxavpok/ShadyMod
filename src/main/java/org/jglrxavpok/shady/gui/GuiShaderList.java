@@ -82,4 +82,9 @@ public class GuiShaderList extends GuiListExtended
         return entries.indexOf(entry);
     }
 
+    public void addEntry(ShaderPassEntry entry, int i)
+    {
+        entries.add(i, entry);
+    }
+
 }

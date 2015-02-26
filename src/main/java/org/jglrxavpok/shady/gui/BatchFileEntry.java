@@ -3,16 +3,22 @@ package org.jglrxavpok.shady.gui;
 import java.io.File;
 
 import joptsimple.internal.Strings;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiListExtended.IGuiListEntry;
+import net.minecraft.util.ResourceLocation;
+
+import org.jglrxavpok.shady.ShadyMod;
 
 public class BatchFileEntry implements IGuiListEntry
 {
 
-    private FontRenderer      font;
-    public GuiBatchesFileList list;
-    private File              file;
-    private String            filepath;
+    private FontRenderer                  font;
+    public GuiBatchesFileList             list;
+    private File                          file;
+    private String                        filepath;
+    private static final ResourceLocation deleteTexture = new ResourceLocation(ShadyMod.MODID, "textures/gui/delete.png");
 
     public BatchFileEntry(FontRenderer font, File file)
     {
@@ -46,13 +52,37 @@ public class BatchFileEntry implements IGuiListEntry
     {
         font.drawString(file.getName().replace(".batch", ""), x, y, 0xFFFFFFFF);
         font.drawString(filepath, x + 10, y + 11, 0xFF707070);
+
+        if(isMouseOver(slotIndex, mouseX, mouseY))
+        {
+            int relX = mouseX - (x - 16);
+            Minecraft.getMinecraft().renderEngine.bindTexture(deleteTexture);
+
+            if(relX >= listWidth - 10)
+            {
+                Gui.drawModalRectWithCustomSizedTexture(x + listWidth - 20, y + 4, 16.0F, 0.0F, 16, 16, 32.0F, 16.0F);
+            }
+            else
+                Gui.drawModalRectWithCustomSizedTexture(x + listWidth - 20, y + 4, 0.0F, 0.0F, 16, 16, 32.0F, 16.0F);
+        }
     }
 
     @Override
     public boolean mousePressed(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY)
     {
         if(isMouseOver(slotIndex, x, y))
-            list.setSelected(slotIndex);
+        {
+            boolean selectable = true;
+            if(list.getSelectedIndex() == slotIndex)
+            {
+                if(relativeX >= list.getListWidth() - 25)
+                {
+                    Minecraft.getMinecraft().displayGuiScreen(new GuiConfirmDeleteBatch(this, Minecraft.getMinecraft().currentScreen, slotIndex, list));
+                }
+            }
+            if(selectable)
+                list.setSelected(slotIndex);
+        }
         return false;
     }
 

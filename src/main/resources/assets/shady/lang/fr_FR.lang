@@ -12,6 +12,12 @@ shady.select.passtype.title=Sélection du type de l'étape
 shady.currentPass=Type courant
 shady.pass.name=Nom de l'étape
 shady.select=Sélectionner
+shady.cancel=Annuler
+
+shady.saveBatch.invalid=Le fichier existe déjà ou le nom n'est pas valide!
+shady.saveBatch.valid=Prêt à enregistrer! \(^.^)/
+shady.saveBatch.title=Enregistrer un groupe
+shady.loadBatch.title=Charger un groupe
 
 shady.pass.type.lowres=Filtre basse résolution
 shady.pass.type.commodore64=Palette de couleur Commodore64
@@ -23,3 +29,7 @@ shady.pass.type.nes=Palette de couleur NES
 
 shady.loadBatch=Charger
 shady.saveBatch=Enregistrer
+
+shady.delBatch.title=Supprimer le groupe
+shady.delBatch.explain=Êtes-vous sûrs que vous voulez supprimer le groupe "%s" ? Vous ne pourrez plus le récupérer! Bien sûr, vous pouvez toujours le refaire... Mais comme vous le savez déjà grâce à cette formule: temps = argent. Vous pourriez devenir super riche si vous ne le supprimer pas ! :( (aucune garantie)
+

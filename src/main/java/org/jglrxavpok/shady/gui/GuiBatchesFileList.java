@@ -69,4 +69,9 @@ public class GuiBatchesFileList extends GuiListExtended
             return (BatchFileEntry) getListEntry(selected);
         return null;
     }
+
+    public void remove(int slotIndex)
+    {
+        entries.remove(slotIndex);
+    }
 }

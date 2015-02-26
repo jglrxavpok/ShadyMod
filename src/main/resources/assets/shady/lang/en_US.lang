@@ -30,6 +30,9 @@ shady.pass.type.nes=NES color palette
 shady.loadBatch=Load a batch
 shady.saveBatch=Save a batch
 
+shady.delBatch.title=Delete batch file
+shady.delBatch.explain=Are you sure you really want to delete this batch "%s" ? You will never be able to retrieve it! Yeah, of course you could just redo it... But that takes time and as we all know it thanks to this formula: time = money. You could have become rich but you have wasted time of redoing you shader batch :( (no warranty)
+
 shady.pass.type.color_convolve=Color convolve filter
 shady.pass.type.phosphor=Phosphor filter
 shady.pass.type.blur=Bluring filter

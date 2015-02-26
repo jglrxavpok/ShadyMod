@@ -31,7 +31,6 @@ public class ShaderPassEntry implements IGuiListEntry
         this.font = font;
         this.pass = pass;
         this.name = name;
-
     }
 
     protected boolean canGoUp()
@@ -107,7 +106,38 @@ public class ShaderPassEntry implements IGuiListEntry
     public boolean mousePressed(int slotIndex, int x, int y, int mouseEvent, int relativeX, int relativeY)
     {
         if(isMouseOver(slotIndex, x, y))
-            list.setSelected(slotIndex);
+        {
+            boolean selectable = true;
+            if(list.getSelectedIndex() == slotIndex)
+            {
+                if(canGoUp())
+                {
+                    if(relativeX <= 16 && relativeY < 16)
+                    {
+                        list.remove(slotIndex);
+                        list.addEntry(this, slotIndex - 1);
+                        list.setSelected(slotIndex - 1);
+                        selectable = false;
+                    }
+                }
+                if(canGoDown())
+                {
+                    if(relativeX <= 16 && relativeY >= 16)
+                    {
+                        list.remove(slotIndex);
+                        list.addEntry(this, slotIndex + 1);
+                        list.setSelected(slotIndex + 1);
+                        selectable = false;
+                    }
+                }
+                if(relativeX >= list.getListWidth() - 25)
+                {
+                    list.remove(slotIndex);
+                }
+            }
+            if(selectable)
+                list.setSelected(slotIndex);
+        }
         return false;
     }
 

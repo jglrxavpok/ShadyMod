@@ -168,7 +168,7 @@ public class GuiUserBatch extends GuiScreen
     public void updateScreen()
     {
         super.updateScreen();
-        boolean slotSelected = passesList.getSelectedIndex() != -1;
+        boolean slotSelected = passesList.getSelectedIndex() != -1 && passesList.getSize() > 0;
         editButton.enabled = slotSelected;
         removeButton.enabled = slotSelected;
     }
